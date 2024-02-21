@@ -2,6 +2,9 @@ package ar.edu.undef.fie.finalppviwebsocket.configurations;
 
 import ar.edu.undef.fie.finalppviwebsocket.service.Subscriber;
 import ar.edu.undef.fie.finalppviwebsocket.service.WebSocketClientHandler;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -16,6 +19,12 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
 
+    @Value("${spring.data.redis.host}")
+    private String redisHost;
+
+    @Value("${spring.data.redis.port}")
+    private int redisPort;
+
     private final WebSocketClientHandler webSocketClientHandler;
 
     public RedisConfig(WebSocketClientHandler webSocketClientHandler) {
@@ -25,8 +34,8 @@ public class RedisConfig {
     @Bean
     public LettuceConnectionFactory lettuceConnectionFactory() {
         RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();
-        configuration.setHostName("localhost");
-        configuration.setPort(6379);
+        configuration.setHostName(redisHost);
+        configuration.setPort(redisPort);
         return new LettuceConnectionFactory(configuration);
     }
 
