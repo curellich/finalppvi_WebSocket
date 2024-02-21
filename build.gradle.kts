@@ -19,7 +19,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-websocket")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.testng:testng:7.1.0")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<Test> {
