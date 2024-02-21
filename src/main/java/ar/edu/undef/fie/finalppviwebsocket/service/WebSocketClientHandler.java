@@ -50,4 +50,13 @@ public class WebSocketClientHandler extends TextWebSocketHandler {
 
 
     }
+    public void sendMessageToAll(int storeId, String message) {
+        sessions.get(storeId).forEach(session -> {
+            try {
+                session.sendMessage(new TextMessage(message));
+            } catch (Exception e) {
+                logger.error("Error sending message", e);
+            }
+        });
+    }
 }
