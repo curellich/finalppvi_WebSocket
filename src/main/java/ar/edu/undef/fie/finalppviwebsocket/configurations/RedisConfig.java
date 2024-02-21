@@ -1,6 +1,7 @@
 package ar.edu.undef.fie.finalppviwebsocket.configurations;
 
 import ar.edu.undef.fie.finalppviwebsocket.service.Subscriber;
+import ar.edu.undef.fie.finalppviwebsocket.service.WebSocketClientHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
@@ -14,6 +15,12 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisConfig {
+
+    private final WebSocketClientHandler webSocketClientHandler;
+
+    public RedisConfig(WebSocketClientHandler webSocketClientHandler) {
+        this.webSocketClientHandler = webSocketClientHandler;
+    }
 
     @Bean
     public LettuceConnectionFactory lettuceConnectionFactory() {
@@ -34,8 +41,13 @@ public class RedisConfig {
     }
 
     @Bean
+    public Subscriber subscriber() {
+        return new Subscriber(webSocketClientHandler);
+    }
+
+    @Bean
     public MessageListenerAdapter messageListener() {
-        return new MessageListenerAdapter(new Subscriber());
+        return new MessageListenerAdapter(subscriber());
     }
 
     @Bean
